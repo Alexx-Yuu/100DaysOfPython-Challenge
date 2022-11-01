@@ -1,0 +1,67 @@
+from art import logo
+import random
+
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+game_stops = False
+
+def play_game():
+    print(logo)
+    my_deck=[]
+    my_score=0
+    comp_deck=[]
+    comp_score=0  
+    for card in range (1,3):
+        my_deck.append(random.choice(cards))
+        my_score+=my_deck[card-1]
+    print(f"Your cards: {my_deck}, current score: {my_score}")
+    comp_score = random.choice(cards)
+    comp_deck.append(comp_score) 
+    print(f"Computer's first card: {comp_score}")
+    
+    choose_to_pick = True
+    while choose_to_pick != False:
+        another_card = input("Type 'y' to get another card, type 'n' to pass: ").lower()
+        if another_card == 'y':
+            my_deck.append(random.choice(cards))
+            my_score+=my_deck[-1]
+            choose_to_pick = you_went_over(my_score, my_deck, comp_score)
+        else: 
+            print(f"Your final hand: {my_deck}, final score: {my_score}")
+            comp_final=computers_turn(comp_score)
+            if comp_final > 21:
+                print("Opponent went over. You win! 🎉")
+            elif my_score > comp_final:
+                print("You win! 🎉")
+            elif my_score == comp_final:
+                print("It's a draw! 🤝")
+            else:
+                print("You lose 😭")
+            choose_to_pick = False
+
+def you_went_over(score_amount, final_deck, comp_final_score):
+    if score_amount > 21:
+        print(f"Your final hand: {final_deck}, final score: {score_amount}")
+        computers_turn(comp_final_score)
+        print("You went over. You lose 😭")
+        return False
+    else:
+        print(f"Your cards: {final_deck}, current score: {score_amount}")
+        print(f"Computer's first card: {comp_final_score}")
+
+def computers_turn(comp_current_score):
+    new_card = 0
+    comp_deck = []
+    comp_deck.append(comp_current_score)
+    while comp_current_score < 17:
+        new_card = random.choice(cards) 
+        comp_deck.append(new_card) 
+        comp_current_score+=new_card
+    print(f"Computer's final hand: {comp_deck}, final score: {comp_current_score}")
+    return comp_current_score
+    
+while not game_stops:
+    game_continues = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
+    if game_continues == 'y':
+        play_game()
+    else:
+        game_stops = True
